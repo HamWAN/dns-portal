@@ -1,6 +1,9 @@
-Django>=4.2.19
-argparse>=1.2.1
-djangorestframework>=3.9.1
-ipaddr>=2.1.11
-psycopg2-binary>=2.9.10
-pyasn1>=0.1.7
+argparse
+django
+djangorestframework
+django-debug-toolbar
+ipaddr
+psycopg2
+pyasn1
+south
+uwsgi
