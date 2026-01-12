@@ -32,7 +32,7 @@ def all_hosts(request):
 
 
 def ansible_hosts(request):
-    """Generates Ansible dynamic inventory format"""
+    """Generates Ansible dynamic inventory new dict format"""
 
     inventory = {
         # this allows ansible to cache the result, instead of calling per host
@@ -50,9 +50,9 @@ def ansible_hosts(request):
         ]
         for group in groups:
             if group in inventory:
-                inventory[group].append(host.fqdn())
+                inventory[group]["hosts"].append(host.fqdn())
             else:
-                inventory[group] = [host.fqdn()]
+                inventory[group] = { "hosts": [ host.fqdn() ]}
     return HttpResponse(json.dumps(inventory), content_type="application/json")
 
 
