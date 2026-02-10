@@ -17,6 +17,20 @@ for each object. More information on setup can be found on
 
     pip install -r requirements.txt
 
+## The Directory Strucure
+
+This is a Django web app and follows its standard structure.
+Two directories contain site specific information and the files will need
+to be edited for your specific implementation. The directories are provided as
+templates (config.template and deploy.template). Your first step should be to make copies:
+
+    cp -pr config.template config
+    cp -pr deploy.template deploy
+
+Later, after pulling updated versions the templates (git pull), you will want to diff your current config and deploy
+to find any changes that you need to apply from the updated templates. You may also choose to commit these files to
+a private git repo.
+
 # Test
 
     python manage.py test
