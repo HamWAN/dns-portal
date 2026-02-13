@@ -4,13 +4,12 @@ from django.db import migrations
 from django.db.utils import OperationalError
 from django.conf import settings
 
-
 def forwards(apps, schema_editor):
     if not schema_editor.connection.alias == 'default':
         return
     # postgresql only
     try:
-        schema_editor.execute("ALTER TABLE portal_ipaddress ALTER COLUMN ip TYPE inet USING(ipinet);")
+        schema_editor.execute("ALTER TABLE portal_ipaddress ALTER COLUMN ip TYPE inet USING(ip::inet);")
     except OperationalError:
         import sys
         sys.stderr.write("Warning: could not set TYPE inet on ip field. Only supported on postgres.\n")
