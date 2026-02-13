@@ -2,16 +2,28 @@
 
 from django.db import migrations
 
+def make_last_login_nullable(apps, schema_editor):
+    """
+    Drop NOT NULL constraint on auth_user.last_login.
+    Only applies to PostgreSQL. SQLite already allows NULL.
+    """
+    if schema_editor.connection.vendor != "postgresql":
+        print("Skipping last_login alteration (not PostgreSQL).")
+        return
+
+    schema_editor.execute(
+        "ALTER TABLE auth_user "
+        "ALTER COLUMN last_login DROP NOT NULL;"
+    )
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('auth', '0012_alter_user_first_name_max_length'),
         ('portal', '0002_fix_ip_type'),
-        ("auth", "0012_alter_user_first_name_max_length"),  # latest auth migration
     ]
 
     operations = [
-        migrations.RunSQL(
-            sql="ALTER TABLE auth_user ALTER COLUMN last_login DROP NOT NULL;",
-            reverse_sql="ALTER TABLE auth_user ALTER COLUMN last_login SET NOT NULL;",
-        ),
+        migrations.RunPython(make_last_login_nullable),
     ]
