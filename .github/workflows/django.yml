@@ -19,7 +19,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build Container Image
-      run: docker build --build-arg PYTHON_VERSION=${{ matrix.python-version }} -t dns-portal .
+      run: make docker PYTHON_VERSION=${{ matrix.python-version }}
     - name: Run Tests
-      run: |
-        docker run --rm dns-portal manage.py test
+      run: make test

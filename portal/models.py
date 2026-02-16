@@ -57,14 +57,14 @@ OS_TYPES = (
 )
 
 class DomainSortManager(models.Manager):
-    def get_query_set(self):
+    def get_queryset(self):
         if DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
-            return super(DomainSortManager, self).get_query_set().extra(
+            return super(DomainSortManager, self).get_queryset().extra(
                 select={'domain_order':
                     "array_reverse(regexp_split_to_array(name, '\.'))"},
                 order_by=['owner__username', 'domain_order'])
         else:
-            return super(DomainSortManager, self).get_query_set()
+            return super(DomainSortManager, self).get_queryset()
 
 
 class Site(models.Model):
