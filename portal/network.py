@@ -37,7 +37,7 @@ class IPNetworkManager(models.Manager):
         try:
             return getattr(self.__class__, attr, *args)
         except AttributeError:
-            return getattr(self.get_query_set(), attr, *args)
+            return getattr(self.get_queryset(), attr, *args)
 
 
 class IPNetworkQuerySet(models.query.QuerySet):   
