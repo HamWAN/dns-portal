@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils.text import Truncator
 
 from config.settings import DATABASES, ROOT_DOMAIN
 from dns.models import Record, Domain
@@ -331,8 +332,12 @@ class Subnet(models.Model):
         if self.network.version == 4:
             return min(self.network)
 
-    def notes_short(self):
-        return self.notes and self.notes.split()[0]
+    def notes_short(self, length=80):
+        """First line of the notes, cut to `length` characters (an ellipsis marks the cut)."""
+        lines = (self.notes or '').strip().splitlines()
+        return Truncator(lines[0]).chars(length) if lines else ''
+    notes_short.short_description = "Notes"
+    notes_short.admin_order_field = "notes"
 
     def numhosts(self):
         if self.network.version == 4:
