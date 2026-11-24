@@ -68,7 +68,10 @@ class Record(models.Model):
 
     def clean(self):
         self.name = self.name.lower()
-        self.content = self.content.lower()
+        # Only hostname-valued content is case-insensitive; TXT (SPF, DKIM,
+        # domain-verification tokens, etc.) must be stored verbatim.
+        if self.type in ('CNAME', 'NS', 'PTR', 'MX', 'SRV'):
+            self.content = self.content.lower()
 
     def update_change_date(self):
         generated_serial = int(datetime.today().strftime('%Y%m%d') + '01')
